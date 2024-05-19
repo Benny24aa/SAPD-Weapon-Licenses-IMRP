@@ -89,7 +89,7 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(badge_number = gsub("B","",badge_number)) |>
   mutate(badge_number = gsub("XXX","",badge_number)) |>
   mutate(badge_number = gsub("I","",badge_number)) |>
- filter(badge_number != "Police Cadet")
+  filter(badge_number != "Police Cadet")
 
 ###################################################################################
 #### Valid Players who passed data inspection - ready for weapon license report ###
