@@ -68,6 +68,7 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   select(-Activity_Well)|>
   select(-Activity_Great)
 
+write.csv (SAPDReferenceFile, "C:/Users/harle/OneDrive/Desktop/IMRP 2024 Improved  War Census/Weapon License Files/Weapon License Dashboard R Script/SAPD-Weapon-Licenses-IMRP/SAPD Activity Check.csv")
 ######################################################
 ### Preparing Data for Lack of Badge Number Report ###
 ######################################################
