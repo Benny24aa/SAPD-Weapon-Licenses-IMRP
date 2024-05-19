@@ -37,8 +37,11 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(playtime_2_weeks = gsub("hours","",playtime_2_weeks))|> 
  mutate(playtime_2_weeks = gsub(" ","",playtime_2_weeks))
 
-#### Activity Report based on 2 weeks
+########################################
+### Activity Report based on 2 weeks ###
+########################################
 
+# Error Types based on activity
 SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(
     Activity_Zero = playtime_2_weeks == 0 ,
@@ -47,15 +50,15 @@ SAPDReferenceFile <- SAPDReferenceFile |>
     Activity_Great = playtime_2_weeks > 40
   )
 
+#Given Critera to search for when considering activity boundaries
+
 SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(Activity_Type = case_when(
     Activity_Zero == TRUE ~ "Inactive",
     Activity_Bare_Minimum == TRUE ~ "Needs Improvement",
     Activity_Well == TRUE ~ "Good",
     Activity_Great == TRUE ~ "Very Good"
-  )
-  
-  )
+  ))
 
 ### Removes columns related to conditions for activity
 
@@ -65,7 +68,14 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   select(-Activity_Well)|>
   select(-Activity_Great)
 
-### Preparing Data for Lack of Badge Number Report
+######################################################
+### Preparing Data for Lack of Badge Number Report ###
+######################################################
+
+#Removes activity type from previous report
+SAPDReferenceFile <- SAPDReferenceFile |>
+  select(-Activity_Type) 
+
 
 #Splits rank and badge into two sections
 SAPDReferenceFile[c('badge_number', 'rank')] <- str_split_fixed(SAPDReferenceFile$rank, ']', 2)
@@ -81,9 +91,9 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(badge_number = gsub("I","",badge_number)) |>
  filter(badge_number != "Police Cadet")
 
-
-#### Valid Players who passed data inspection
-
+###################################################################################
+#### Valid Players who passed data inspection - ready for weapon license report ###
+###################################################################################
 SAPDReferenceFile <- SAPDReferenceFile |>
   filter(badge_number > 0)|>
   filter(rank != "" )
