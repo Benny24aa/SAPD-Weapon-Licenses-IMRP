@@ -30,5 +30,8 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   clean_names() |>
   mutate(faction_name = "SAPD")
 
+#Removing text that are not neccessary in dataframe
+
 SAPDReferenceFile <- SAPDReferenceFile |> 
-  mutate(name = gsub("<a0><a0>","",name))
+  mutate(name = gsub("<a0><a0>","",name)) |> 
+  mutate(playtime_2_weeks = gsub("hours","",playtime_2_weeks))
