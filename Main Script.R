@@ -30,8 +30,33 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   clean_names() |>
   mutate(faction_name = "SAPD")
 
-#Removing text that are not neccessary in dataframe
+#Removing text that are not necessary in dataframe
 
 SAPDReferenceFile <- SAPDReferenceFile |> 
   mutate(name = gsub("<a0><a0>","",name)) |> 
-  mutate(playtime_2_weeks = gsub("hours","",playtime_2_weeks))
+  mutate(playtime_2_weeks = gsub("hours","",playtime_2_weeks))|> 
+ mutate(playtime_2_weeks = gsub(" ","",playtime_2_weeks))
+
+SAPDReferenceFile[c('badge_number', 'rank')] <- str_split_fixed(SAPDReferenceFile$rank, ']', 2)
+
+SAPDReferenceFile <- SAPDReferenceFile |>
+  mutate(rank = gsub("  ", "", rank))|>
+  mutate(badge_number = gsub("!","",badge_number))|>
+  mutate(badge_number = gsub("D","",badge_number))|>
+  mutate(badge_number = gsub("S","",badge_number))|>
+  mutate(badge_number = gsub("H","",badge_number)) |>
+  mutate(badge_number = gsub("B","",badge_number)) |>
+  mutate(badge_number = gsub("XXX","",badge_number)) |>
+  mutate(badge_number = gsub("Police Cadet","",badge_number)) |>
+  mutate(badge_number = gsub("Reserve Officer","",badge_number)) |>
+  mutate(badge_number = gsub("Reserve Officer I","",badge_number)) |>
+  mutate(badge_number = gsub("enior Cadet","",badge_number)) |>
+  mutate(badge_number = gsub("I","",badge_number)) |>
+  mutate(badge_number = gsub("Retard l", "", badge_number))|>
+  mutate(badge_number = gsub("D","",badge_number))
+
+
+#Activity Report Over Last 2 Weeks
+
+
+ 
