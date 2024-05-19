@@ -142,3 +142,5 @@ SAPDWepLicFile <- SAPDWepLicFile |>
  select(-SAPD_Allocation)|>
  select(-Samuel_NOOSE)|>
  select(-Thomas_NOOSE)
+
+write.csv (SAPDWepLicFile, "C:/Users/harle/OneDrive/Desktop/IMRP 2024 Improved  War Census/Weapon License Files/Weapon License Dashboard R Script/SAPD-Weapon-Licenses-IMRP/weapon license taken recent edited file.csv")
