@@ -104,7 +104,8 @@ SAPDReferenceFile <- SAPDReferenceFile |>
 SAPDReferenceFile <- SAPDReferenceFile |>
   filter(badge_number > 0)|>
   select(-No_Badge_Detected) |>
-  filter(rank != "" )
+  filter(rank != "" )|>
+ mutate(name = gsub(" ","_",name))  
   
 ##########################################
 ### Loading in New Weapon License Data ###
@@ -121,3 +122,23 @@ SAPDWepLicFile <- SAPDWepLicFile |>
   clean_names() |>
   select(-revoked_last)
 
+### Checking SAPD Reference File against IG data for weapon license takes
+SAPDWepLicFile <- SAPDWepLicFile |>
+  mutate(
+    SAPD_Allocation = SAPDWepLicFile$revoked_by %in% SAPDReferenceFile$name,
+    Samuel_NOOSE = SAPDWepLicFile$revoked_by == "James_Coleman (( Administrator ))",
+    Thomas_NOOSE = SAPDWepLicFile$revoked_by == "	Thomas_Burke (( Administrator ))")
+
+SAPDWepLicFile <- SAPDWepLicFile |>
+  mutate(
+    faction = case_when(
+      SAPD_Allocation == TRUE ~ "SAPD",
+      Samuel_NOOSE == TRUE ~ "NOOSE",
+      Thomas_NOOSE == TRUE ~ "NOOSE",
+      TRUE ~ "SASF"))
+
+SAPDWepLicFile <- SAPDWepLicFile |>
+  mutate(revoked_by = gsub("_"," ",revoked_by))|>
+ select(-SAPD_Allocation)|>
+ select(-Samuel_NOOSE)|>
+ select(-Thomas_NOOSE)
