@@ -89,20 +89,23 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(badge_number = gsub("B","",badge_number)) |>
   mutate(badge_number = gsub("XXX","",badge_number)) |>
   mutate(badge_number = gsub("I","",badge_number)) |>
-  filter(badge_number != "Police Cadet")
+  mutate(badge_number = gsub("C","",badge_number)) |>
+  mutate(badge_number = gsub("D","",badge_number))|>
+  mutate(badge_number = gsub("S","",badge_number))|>
+  filter(badge_number != "Police adet")
 
+SAPDReferenceFile <- SAPDReferenceFile |>
+  mutate(
+    No_Badge_Detected = badge_number == "")
+    
 ###################################################################################
 #### Valid Players who passed data inspection - ready for weapon license report ###
 ###################################################################################
 SAPDReferenceFile <- SAPDReferenceFile |>
   filter(badge_number > 0)|>
+  select(-No_Badge_Detected) |>
   filter(rank != "" )
-
-SAPDReferenceFile <- SAPDReferenceFile |>
-mutate(badge_number = gsub("C","",badge_number)) |>
-  mutate(badge_number = gsub("D","",badge_number))|>
-mutate(badge_number = gsub("S","",badge_number))
-
-
-
- 
+  
+##########################################
+### Loading in New Weapon License Data ###
+########################################## 
