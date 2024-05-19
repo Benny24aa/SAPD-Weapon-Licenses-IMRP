@@ -37,32 +37,62 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(playtime_2_weeks = gsub("hours","",playtime_2_weeks))|> 
  mutate(playtime_2_weeks = gsub(" ","",playtime_2_weeks))
 
+#### Activity Report based on 2 weeks
+
+SAPDReferenceFile <- SAPDReferenceFile |>
+  mutate(
+    Activity_Zero = playtime_2_weeks == 0 ,
+    Activity_Bare_Minimum = playtime_2_weeks > 0 & playtime_2_weeks <= 20,
+    Activity_Well = playtime_2_weeks >20 & playtime_2_weeks <=40,
+    Activity_Great = playtime_2_weeks > 40
+  )
+
+SAPDReferenceFile <- SAPDReferenceFile |>
+  mutate(Activity_Type = case_when(
+    Activity_Zero == TRUE ~ "Inactive",
+    Activity_Bare_Minimum == TRUE ~ "Needs Improvement",
+    Activity_Well == TRUE ~ "Good",
+    Activity_Great == TRUE ~ "Very Good"
+  )
+  
+  )
+
+### Removes columns related to conditions for activity
+
+SAPDReferenceFile <- SAPDReferenceFile |>
+  select(-Activity_Zero) |>
+  select(-Activity_Bare_Minimum)|>
+  select(-Activity_Well)|>
+  select(-Activity_Great)
+
+### Preparing Data for Lack of Badge Number Report
+
+#Splits rank and badge into two sections
 SAPDReferenceFile[c('badge_number', 'rank')] <- str_split_fixed(SAPDReferenceFile$rank, ']', 2)
 
+#Removes aspects of badge_number that aren't required and filters out Police Cadets as they don't have a number
 SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(rank = gsub("  ", "", rank))|>
   mutate(badge_number = gsub("!","",badge_number))|>
   mutate(badge_number = gsub("D","",badge_number))|>
-  mutate(badge_number = gsub("S","",badge_number))|>
   mutate(badge_number = gsub("H","",badge_number)) |>
   mutate(badge_number = gsub("B","",badge_number)) |>
   mutate(badge_number = gsub("XXX","",badge_number)) |>
-  mutate(badge_number = gsub("Police Cadet","",badge_number)) |>
-  mutate(badge_number = gsub("Reserve Officer","",badge_number)) |>
-  mutate(badge_number = gsub("Reserve Officer I","",badge_number)) |>
-  mutate(badge_number = gsub("enior Cadet","",badge_number)) |>
   mutate(badge_number = gsub("I","",badge_number)) |>
-  mutate(badge_number = gsub("Retard l", "", badge_number))|>
-  mutate(badge_number = gsub("C","",badge_number)) |>
-  mutate(badge_number = gsub("Police adet","",badge_number)) |>
-  mutate(badge_number = gsub("enior adet","",badge_number)) |>
-  mutate(badge_number = gsub("D","",badge_number))
+ filter(badge_number != "Police Cadet")
 
 
-#### Lack of badge number report
+#### Valid Players who passed data inspection
 
+SAPDReferenceFile <- SAPDReferenceFile |>
+  filter(badge_number > 0)|>
+  filter(rank != "" )
 
-#Activity Report Over Last 2 Weeks
+SAPDReferenceFile <- SAPDReferenceFile |>
+mutate(badge_number = gsub("C","",badge_number)) |>
+  mutate(badge_number = gsub("D","",badge_number))|>
+mutate(badge_number = gsub("S","",badge_number))
+
 
 
  
