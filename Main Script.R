@@ -53,7 +53,13 @@ SAPDReferenceFile <- SAPDReferenceFile |>
   mutate(badge_number = gsub("enior Cadet","",badge_number)) |>
   mutate(badge_number = gsub("I","",badge_number)) |>
   mutate(badge_number = gsub("Retard l", "", badge_number))|>
+  mutate(badge_number = gsub("C","",badge_number)) |>
+  mutate(badge_number = gsub("Police adet","",badge_number)) |>
+  mutate(badge_number = gsub("enior adet","",badge_number)) |>
   mutate(badge_number = gsub("D","",badge_number))
+
+
+#### Lack of badge number report
 
 
 #Activity Report Over Last 2 Weeks
