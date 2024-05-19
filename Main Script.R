@@ -127,7 +127,7 @@ SAPDWepLicFile <- SAPDWepLicFile |>
   mutate(
     SAPD_Allocation = SAPDWepLicFile$revoked_by %in% SAPDReferenceFile$name,
     Samuel_NOOSE = SAPDWepLicFile$revoked_by == "James_Coleman (( Administrator ))",
-    Thomas_NOOSE = SAPDWepLicFile$revoked_by == "	Thomas_Burke (( Administrator ))")
+    Thomas_NOOSE = SAPDWepLicFile$revoked_by == "Thomas_Burke (( Administrator ))")
 
 SAPDWepLicFile <- SAPDWepLicFile |>
   mutate(
