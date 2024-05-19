@@ -109,3 +109,15 @@ SAPDReferenceFile <- SAPDReferenceFile |>
 ##########################################
 ### Loading in New Weapon License Data ###
 ########################################## 
+
+# unique variable for reference file location
+Weplicfile <- "C:/Users/harle/OneDrive/Desktop/IMRP 2024 Improved  War Census/Weapon License Files/Weapon License Dashboard R Script/SAPD-Weapon-Licenses-IMRP/weapon license taken recent file.csv"
+
+### Load in CSV
+SAPDWepLicFile <- read.csv(Weplicfile)
+
+#### Load in data, apply clean names and remove revoked last date
+SAPDWepLicFile <- SAPDWepLicFile |>
+  clean_names() |>
+  select(-revoked_last)
+
