@@ -28,4 +28,7 @@ SAPDReferenceFile <- read.csv(ReferenceFileLocation)
 #Apply clean_names to reference file and then add SAPD to each individual's name
 SAPDReferenceFile <- SAPDReferenceFile |>
   clean_names() |>
-  mutate(Faction_Name = "SAPD")
+  mutate(faction_name = "SAPD")
+
+SAPDReferenceFile <- SAPDReferenceFile |> 
+  mutate(name = gsub("<a0><a0>","",name))
